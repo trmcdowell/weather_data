@@ -1,12 +1,12 @@
 /**
  * Error handling
  * @author Tom McDowell
- * @version 9/14/2021
+ * @version 09/14/2021
  * Status: Stable
  */
 public class Error {
     private static int errorCount = 0;
-    private static final int errorLimit = 10;
+    private static final int errorLimit = 5;
 
     /** Report a warning to System.err
      *  @param message the text of the warning

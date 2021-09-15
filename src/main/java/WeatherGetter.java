@@ -7,6 +7,12 @@ import java.net.http.HttpClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/**
+ * Pull current weather info in a city of choice from http://www.openweathermap.org
+ * @author Thomas McDowell
+ * @version 09/14/2021
+ */
+
 public class WeatherGetter {
     private static String city;
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -30,7 +36,7 @@ public class WeatherGetter {
             return jsonMap;
         }
         catch ( IOException | InterruptedException e ) {
-            Error.fatal( "IOException | InterruptedException: HttpResponse" );
+            Error.warn( "IOException | InterruptedException: HttpResponse" );
         }
         return null;
     }

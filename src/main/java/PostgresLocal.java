@@ -40,7 +40,6 @@ public class PostgresLocal {
             Statement stmt = localConnection.createStatement();
             stmt.executeUpdate( sql );
             stmt.close();
-            System.out.println( "Statement executed" );
         } catch ( SQLException e ) {
             e.printStackTrace();
         }

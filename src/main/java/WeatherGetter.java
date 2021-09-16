@@ -12,17 +12,30 @@ import com.google.gson.GsonBuilder;
  * @author Thomas McDowell
  * @version 09/14/2021
  */
-
 public class WeatherGetter {
     private static String city;
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final String API_KEY = "228c9d836a8cef9782bc4c74e469a680";
     private static final HttpClient client = HttpClient.newHttpClient();
 
+    /**
+     * WeatherGetter constructor
+     * @param city to pull weather data from
+     */
     public WeatherGetter( String city ) {
         WeatherGetter.city = city;
     }
 
+    /**
+     * getCity gets the WeatherGetter city as a string
+     * @return city string
+     */
+    public String getCity() { return city; }
+
+    /**
+     * getWeather gets weather info of selected city in json format from http://www.openweathermap.org
+     * @return json weather info
+     */
     public Map<String, Object> getWeather() {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri( URI.create(
@@ -40,5 +53,4 @@ public class WeatherGetter {
         }
         return null;
     }
-
 }

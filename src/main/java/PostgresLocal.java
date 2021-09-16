@@ -1,4 +1,3 @@
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.lang.*;
 
@@ -7,13 +6,24 @@ import java.lang.*;
  * @author Thomas McDowell
  * @version 09/15/2021
  */
-
 public class PostgresLocal {
 
     private static Connection localConnection;
 
+    /**
+     * PostgresLocal constructor, initializes a local database connection
+     * @param db - name of local database
+     * @param username - local database username
+     * @param password - local database password
+     */
     public PostgresLocal(String db, String username, String password ) { setLocalConnection( db, username, password ); }
 
+    /**
+     * setLocalConnection sets a local database connection
+     * @param db - name of local database
+     * @param username - local database username
+     * @param password - local database password
+     */
     public void setLocalConnection( String db, String username, String password ) {
         try {
             Class.forName( "org.postgresql.Driver" );
@@ -26,6 +36,9 @@ public class PostgresLocal {
         }
     }
 
+    /**
+     * disconnect from current local connection
+     */
     public void disconnect() {
         try {
             localConnection.close();
@@ -35,6 +48,10 @@ public class PostgresLocal {
         }
     }
 
+    /**
+     * statement executes an SQL statement on the local database that PostgresLocal is currently connected to
+     * @param sql - an SQL statement
+     */
     public void statement( String sql ) {
         try {
             Statement stmt = localConnection.createStatement();

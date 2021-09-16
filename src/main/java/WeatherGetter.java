@@ -40,7 +40,7 @@ public class WeatherGetter {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri( URI.create(
                         String.format( "http://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s&units=imperial",
-                                      city, API_KEY ) )
+                                      city.replace(' ', '+'), API_KEY ) )
                     )
                 .build();
         try {

@@ -75,10 +75,10 @@ public class WeatherHandler {
      * @param periodMinutes - number of minutes between data pulls
      * @param collectionTime - total time to collect data in minutes
      */
-    private static void collectData( float periodMinutes, float collectionTime ) {
+    private static void collectData( float periodTime, float collectionTime ) {
         Timer timer = new Timer();
         float minute = 60000; // 1 minute in ms
-        float period = periodMinutes * minute;
+        float period = periodTime * minute;
         timer.schedule(new TimerTask() {
                            long startTime = System.currentTimeMillis();
 
@@ -112,8 +112,8 @@ public class WeatherHandler {
      */
     private static void help() {
         System.out.println( "Commands:" );
-        System.out.println( "collect [PERIOD] [COLLECTION TIME]: collect weather data from selected city every " +
-                            "PERIOD minutes for COLLECTION TIME minutes" );
+        System.out.println( "collect [PERIOD TIME] [COLLECTION TIME]: collect weather data from selected city every " +
+                            "PERIOD TIME minutes for COLLECTION TIME minutes" );
         System.out.println( "trend [TREND]: plot collected TREND data over time" );
         System.out.println( "      Available trends: temperature, humidity, pressure, wind speed, visibility" );
         //System.out.println( "change_city: Change selected city" );

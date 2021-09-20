@@ -8,7 +8,7 @@ import java.lang.*;
  */
 public class PostgresLocal {
 
-    private static Connection localConnection;
+    protected static Connection localConnection;
 
     /**
      * PostgresLocal constructor, initializes a local database connection

@@ -31,6 +31,7 @@ public class WeatherGetter {
      * @return city string
      */
     public String getCity() { return city; }
+    public void setCity( String city ) { WeatherGetter.city = city; }
 
     /**
      * getWeather gets weather info of selected city in json format from http://www.openweathermap.org

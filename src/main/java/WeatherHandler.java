@@ -3,7 +3,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Main class of weather_trends, uses an interactive prompt to collect weather data from a city and stores it in
+ * Main class of weather_data, uses an interactive prompt to collect weather data from a city and stores it in
  * a local weather database. Also pulls data from the database and prints collected data for viewing.
  * @author Thomas McDowell
  * @version 09/15/2021

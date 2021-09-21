@@ -15,7 +15,7 @@ import com.google.gson.GsonBuilder;
 public class WeatherGetter {
     private static String city;
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private static final String API_KEY = "228c9d836a8cef9782bc4c74e469a680";
+    private static final String API_KEY = "228c9d836a8cef9782bc4c74e469a680"; //deprecated key, replace with yours
     private static final HttpClient client = HttpClient.newHttpClient();
 
     /**

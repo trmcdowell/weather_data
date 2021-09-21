@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
  * @author Thomas McDowell
  * @version 09/15/2021
  */
-
 public class WeatherHandler {
 
-    static WeatherGetter weatherGetter = new WeatherGetter(""); // default string before user selects city
-    static WeatherLocal weatherDB = new WeatherLocal("weather", "postgres", "postgres" );
-    static Scanner scanner = new Scanner( System.in );
+    private static final WeatherGetter weatherGetter = new WeatherGetter(""); // default string before user selects city
+    private static final WeatherLocal weatherDB = new WeatherLocal("weather", "postgres", "postgres" );
+    private static final Scanner scanner = new Scanner( System.in );
+    private static final Pattern cityPat = Pattern.compile("^([a-z\u0080-\u024F]+(?:. |-| |'))*[a-z\u0080-\u024F]*$");
     // SQL template for weather database tables
     private static final String weather_table_template = "id serial primary key unique not null, " +
                                                          "date_time timestamptz not null default current_timestamp, " +
@@ -25,12 +25,12 @@ public class WeatherHandler {
                                                          "description varchar not null";
 
     /**
-     * selectCity chooses a city to collect data or plot trends from
+     * selectCity chooses a city to collect data or print data from. Prompts
+     * user for string input.
      */
     private static void selectCity() {
-        System.out.println( "Enter city of interest: " );
+        System.out.println( "Enter a city: " );
         String city = scanner.nextLine().toLowerCase();
-        Pattern cityPat = Pattern.compile("[a-z]+([\\s]*[a-z]*)*"); // BUG: only matches strings with only alphabetic characters
         Matcher cityMatch = cityPat.matcher( city );
         if ( cityMatch.matches() ) {
             weatherGetter.setCity( city );
@@ -43,6 +43,25 @@ public class WeatherHandler {
             Error.warn("Error: invalid city string");
             selectCity();
         }
+    }
+
+    /**
+     * selectCity chooses a city to collect data or print data from.
+     * @param city - city string
+     */
+    private static void selectCity( String city ) {
+        Matcher cityMatch = cityPat.matcher( city );
+        if ( cityMatch.matches() ) {
+            weatherGetter.setCity( city );
+            weatherDB.statement(
+                    String.format("CREATE TABLE IF NOT EXISTS %s (" + weather_table_template + ')',
+                            city.replace(' ', '_')
+                    )
+            );
+        } else {
+            Error.warn("Error: invalid city string");
+        }
+        System.out.println("Enter a command: ");
     }
 
     /**
@@ -82,7 +101,7 @@ public class WeatherHandler {
             float period = periodTime * minute;
             System.out.println("Collecting data...");
             timer.schedule( new TimerTask() {
-                               long startTime = System.currentTimeMillis();
+                               final long startTime = System.currentTimeMillis();
 
                                @Override
                                public void run() {
@@ -104,7 +123,7 @@ public class WeatherHandler {
     }
 
     /**
-     * viewData prints a column of previously colleccted weather data with corresponding timestamps, or all weather
+     * viewData prints a column of previously collected weather data with corresponding timestamps, or all weather
      * data with timestamps
      * @param label - column to view, all for whole table
      */
@@ -124,7 +143,7 @@ public class WeatherHandler {
                             "[PERIOD TIME] minutes for [COLLECTION TIME] minutes" );
         System.out.println( "view [DATA]: view collected data, all for whole data set" );
         System.out.println( "      Available data: temperature, humidity, pressure, wind speed, visibility" );
-        //System.out.println( "city: select a new city" );
+        System.out.println( "city [CITY]: select a new city" );
         System.out.println( "help: print available commands" );
         System.out.println( "exit: exit weather trends" );
         // help complete, ready for new command
@@ -138,14 +157,14 @@ public class WeatherHandler {
         System.out.println( "Welcome to weather trends!" );
         System.out.println( "Type 'help' for a list of valid commands" );
         selectCity();
-        System.out.println("Enter a command: ");
+        System.out.println( "Enter a command: " );
         while (true) {
             String command = scanner.next().toLowerCase();
             switch (command) { // BUG: currently have to print enter a command at the end of every command function
                 case "collect" -> collectData( scanner.nextFloat(), scanner.nextFloat() );
                 case "view" -> viewData( scanner.next() );
                 case "help" -> help();
-                //case "city" -> selectCity();
+                case "city" -> selectCity( scanner.nextLine().toLowerCase().trim() );
                 case "exit" -> System.exit(0);
                 default -> Error.warn("Error: invalid command.\nType 'help' for a list of valid commands.");
             }

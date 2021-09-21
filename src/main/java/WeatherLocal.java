@@ -15,7 +15,7 @@ public class WeatherLocal extends PostgresLocal {
     }
 
     public void printTable( String table ) {
-        String QUERY = String.format( "SELECT * FROM %s", table );
+        String QUERY = String.format( "SELECT * FROM %s", table.replace(' ', '_') );
         try {
             Statement stmt = localConnection.createStatement();
             ResultSet rs = stmt.executeQuery( QUERY );
